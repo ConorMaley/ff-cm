@@ -4,12 +4,13 @@ import { IScoring } from 'lib/models/Scoring';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { IPlayer } from '../lib/models/Player';
-import { resetDraft } from '../lib/store/actions/players';
+import { resetDraft, toggleKeeperMode } from '../lib/store/actions/players';
 import { setScoreFormat, toggleScoringFormatting } from '../lib/store/actions/scoring';
 import { setNumberOfTeams, setTrackedTeam, toggleRosterFormatting, toggleTeamNameUpdates } from '../lib/store/actions/teams';
 import { IStoreState } from '../lib/store/store';
 
 interface IProps {
+  keeperMode: boolean;
   numberOfTeams: number;
   resetDraft: () => void;
   scoring: IScoring;
@@ -19,6 +20,7 @@ interface IProps {
   teamNames: string[];
   toggleRosterFormatting: () => void;
   toggleScoringFormatting: () => void;
+  toggleKeeperMode: () => void;
   toggleTeamNameUpdates: () => void;
   trackedTeam: number;
   undraftedPlayers: IPlayer[];
@@ -42,7 +44,7 @@ class Settings extends React.Component<IProps, IState> {
   };
 
   public render() {
-    const { numberOfTeams, teamNames } = this.props;
+    const { numberOfTeams, keeperMode, teamNames } = this.props;
     const { open } = this.state;
 
     // an array with the allowable number of teams: [6, 16]
@@ -110,6 +112,14 @@ class Settings extends React.Component<IProps, IState> {
             </label>
             
             <label>
+              <Tooltip title="Assign players to teams without advancing the draft">
+                <Button type={keeperMode ? "primary" : "default"} className="options-left" onClick={this.props.toggleKeeperMode}>
+                  Keeper Mode
+                </Button>
+              </Tooltip>
+            </label>
+            
+            <label>
               <Tooltip title="Change Team Names">
                 <Button className="options-left" onClick={this.props.toggleTeamNameUpdates}>
                   Team Names
@@ -155,7 +165,8 @@ class Settings extends React.Component<IProps, IState> {
   };
 }
 
-const mapStateToProps = ({ numberOfTeams, scoring, teams, trackedTeam, undraftedPlayers, }: IStoreState) => ({
+const mapStateToProps = ({ keeperMode, numberOfTeams, scoring, teams, trackedTeam, undraftedPlayers, }: IStoreState) => ({
+  keeperMode,
   numberOfTeams,
   scoring,
   teamNames: teams.map(team => team.name),
@@ -170,6 +181,7 @@ const mapDispathToProps = (dispatch: any) => ({
   setTrackedTeam: (index: number) => dispatch(setTrackedTeam(index)),
   toggleRosterFormatting: () => dispatch(toggleRosterFormatting()),
   toggleScoringFormatting: () => dispatch(toggleScoringFormatting()),
+  toggleKeeperMode: () => dispatch(toggleKeeperMode()),
   toggleTeamNameUpdates: () => dispatch(toggleTeamNameUpdates()),
 });
 

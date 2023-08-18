@@ -37,3 +37,7 @@ export const setRosterFormat = (rosterFormat: IRoster) => ({
   rosterFormat,
   type: ACTION_TYPES.SET_ROSTER_FORMAT,
 });
+
+export const toggleKeeperMode = () => ({
+  type: ACTION_TYPES.TOGGLE_KEEPER_MODE
+});

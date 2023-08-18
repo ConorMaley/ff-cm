@@ -47,6 +47,11 @@ export interface IStoreState {
   lastSyncPlayers: IPlayer[];
 
   /**
+   * Whether the app is currently in a state of updating keeper players
+   */
+  keeperMode: boolean;
+
+  /**
    * Total number of teams drafting. Has downstream effects on the VOR calculations,
    * since a larger number of teams drafting means that roles like DST and TE take on
    * more value and should likely be drafted sooner
@@ -176,6 +181,7 @@ export const initialState = {
   currentPick: 0, // index of current pick
   formattingRoster: false,
   formattingScoring: false,
+  keeperMode: false,
   lastPickedPlayer: null,
   lastSync: -1,
   lastSyncPlayers: [],
